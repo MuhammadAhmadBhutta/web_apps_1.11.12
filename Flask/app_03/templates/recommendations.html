@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Recommendations</title>
+  <style>
+    :root {
+      --bg-color: #f6f8fa;
+      --text-color: #333;
+      --box-bg: #fff;
+      --accent-color: #007bff;
+    }
+    body {
+      background: var(--bg-color);
+      color: var(--text-color);
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 50px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+    }
+    .about-btn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: var(--accent-color);
+      color: #fff;
+      padding: 8px 14px;
+      border-radius: 4px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .about-btn:hover { background: #0056b3; }
+    .theme-switcher {
+      position: absolute;
+      top: 20px;
+      right: 120px;
+    }
+    h1 { margin-bottom: 30px; }
+    .grid { display: flex; gap: 20px; }
+    .box {
+      background: var(--box-bg);
+      padding: 20px;
+      border-radius: 8px;
+      width: 250px;
+    }
+    .product-card {
+      margin-bottom: 10px;
+      padding: 8px;
+      background: var(--box-bg);
+      border-radius: 5px;
+      border: 1px solid #ddd;
+    }
+    .product-card p { margin: 4px 0; }
+    a.back {
+      margin-top: 30px;
+      text-decoration: none;
+      color: var(--accent-color);
+      font-weight: bold;
+    }
+    a.back:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <a href="/about" class="about-btn">About</a>
+  <div class="theme-switcher">
+    <label for="theme-select">Theme:</label>
+    <select id="theme-select">
+      <option value="light">Light</option>
+      <option value="dark">Dark</option>
+      <option value="blue">Blue</option>
+    </select>
+  </div>
+
+  <h1>📦 Recommendations</h1>
+  <div class="grid">
+    {% for cid, rec in [(customer_id1, rec1), (customer_id2, rec2), (customer_id3, rec3)] %}
+    <div class="box">
+      <h3>Customer: {{ cid }}</h3>
+      {% if rec and rec[0]['Product Name'].startswith("No") %}
+        <p>{{ rec[0]['Product Name'] }}</p>
+      {% else %}
+        {% for item in rec %}
+        <div class="product-card">
+          <p><strong>Name:</strong> {{ item['Product Name'] }}</p>
+          <p><strong>Category:</strong> {{ item['Category'] }}</p>
+          <p><strong>Sub-Category:</strong> {{ item['Sub-Category'] }}</p>
+        </div>
+        {% endfor %}
+      {% endif %}
+    </div>
+    {% endfor %}
+  </div>
+  <a href="/" class="back">🔙 Back to Home</a>
+
+  <script>
+    const themeSelect = document.getElementById('theme-select');
+    themeSelect.addEventListener('change', () => {
+      const t = themeSelect.value;
+      switch (t) {
+        case 'light': document.documentElement.style.setProperty('--bg-color', '#f6f8fa'); document.documentElement.style.setProperty('--text-color', '#333'); document.documentElement.style.setProperty('--box-bg', '#fff'); document.documentElement.style.setProperty('--accent-color', '#007bff'); break;
+        case 'dark': document.documentElement.style.setProperty('--bg-color', '#121212'); document.documentElement.style.setProperty('--text-color', '#f1f1f1'); document.documentElement.style.setProperty('--box-bg', '#1e1e1e'); document.documentElement.style.setProperty('--accent-color', '#bb86fc'); break;
+        case 'blue': document.documentElement.style.setProperty('--bg-color', '#e6f0ff'); document.documentElement.style.setProperty('--text-color', '#003366'); document.documentElement.style.setProperty('--box-bg', '#ffffff'); document.documentElement.style.setProperty('--accent-color', '#0056b3'); break;
+      }
+    });
+  </script>
+</body>
+</html>

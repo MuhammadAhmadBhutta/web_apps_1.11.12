@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Superstore Recommender</title>
+  <style>
+    :root {
+      --bg-color: #f6f8fa;
+      --text-color: #333;
+      --box-bg: #fff;
+      --accent-color: #007bff;
+    }
+    body {
+      background: var(--bg-color);
+      color: var(--text-color);
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 50px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+    }
+    .about-btn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: var(--accent-color);
+      color: #fff;
+      padding: 8px 14px;
+      border-radius: 4px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .about-btn:hover { background: #0056b3; }
+    .theme-switcher {
+      position: absolute;
+      top: 20px;
+      right: 120px;
+    }
+    h1 { color: var(--text-color); }
+    form {
+      background: var(--box-bg);
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      width: 300px;
+      margin-top: 20px;
+    }
+    label { font-weight: bold; }
+    input {
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    button {
+      padding: 10px;
+      background: var(--accent-color);
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    button:hover { background: #0056b3; }
+  </style>
+</head>
+<body>
+  <a href="/about" class="about-btn">About</a>
+  <div class="theme-switcher">
+    <label for="theme-select">Theme:</label>
+    <select id="theme-select">
+      <option value="light">Light</option>
+      <option value="dark">Dark</option>
+      <option value="blue">Blue</option>
+    </select>
+  </div>
+
+  <h1>🛍️ Superstore Product Recommender</h1>
+  <form action="/recommend" method="post">
+    <label>Customer ID 1:</label>
+    <input type="text" name="customer_id1" placeholder="e.g., CG-12520" />
+    <label>Customer ID 2:</label>
+    <input type="text" name="customer_id2" placeholder="Optional" />
+    <label>Customer ID 3:</label>
+    <input type="text" name="customer_id3" placeholder="Optional" />
+    <button type="submit">Get Recommendations</button>
+  </form>
+
+  <script>
+    const themeSelect = document.getElementById('theme-select');
+    themeSelect.addEventListener('change', () => {
+      const t = themeSelect.value;
+      switch (t) {
+        case 'light':
+          document.documentElement.style.setProperty('--bg-color', '#f6f8fa');
+          document.documentElement.style.setProperty('--text-color', '#333');
+          document.documentElement.style.setProperty('--box-bg', '#fff');
+          document.documentElement.style.setProperty('--accent-color', '#007bff');
+          break;
+        case 'dark':
+          document.documentElement.style.setProperty('--bg-color', '#121212');
+          document.documentElement.style.setProperty('--text-color', '#f1f1f1');
+          document.documentElement.style.setProperty('--box-bg', '#1e1e1e');
+          document.documentElement.style.setProperty('--accent-color', '#bb86fc');
+          break;
+        case 'blue':
+          document.documentElement.style.setProperty('--bg-color', '#e6f0ff');
+          document.documentElement.style.setProperty('--text-color', '#003366');
+          document.documentElement.style.setProperty('--box-bg', '#ffffff');
+          document.documentElement.style.setProperty('--accent-color', '#0056b3');
+          break;
+      }
+    });
+  </script>
+</body>
+</html>
