@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>ChatBot</title>
+  <style>
+    :root {
+      --bg-color: #0b2447;
+      --header-bg: #19376d;
+      --box-bg: #10264d;
+      --text-color: #ffffff;
+    }
+
+    body {
+      background: var(--bg-color);
+      color: var(--text-color);
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      height: 100vh;
+    }
+
+    header {
+      width: 100%;
+      background: var(--header-bg);
+      padding: 20px 0;
+      text-align: center;
+    }
+
+    header img {
+      height: 60px;
+      border-radius: 50%;
+      display: block;
+      margin: 0 auto;
+    }
+
+    header h1 {
+      margin: 10px 0 0;
+      font-size: 1.8rem;
+    }
+
+    #chat-box {
+      flex: 1;
+      width: 90%;
+      max-width: 800px;
+      background: var(--box-bg);
+      margin: 20px 0;
+      border-radius: 10px;
+      padding: 20px;
+      overflow-y: auto;
+      height: 70vh;
+    }
+
+    .message {
+      margin-bottom: 20px;
+    }
+
+    .user { text-align: right; }
+    .bot { text-align: left; color: #dbeafe; }
+
+    .reactions {
+      margin-top: 5px;
+    }
+
+    .reaction {
+      cursor: pointer;
+      margin-right: 10px;
+      transition: transform 0.2s;
+    }
+
+    .reaction:hover {
+      transform: scale(1.2);
+    }
+
+    #input-area {
+      width: 90%;
+      max-width: 800px;
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    #message {
+      flex: 1;
+      padding: 12px;
+      border-radius: 5px;
+      border: none;
+      background: var(--box-bg);
+      color: var(--text-color);
+    }
+
+    button {
+      background: #576cbc;
+      border: none;
+      padding: 12px;
+      border-radius: 5px;
+      cursor: pointer;
+      color: #fff;
+    }
+
+    #controls {
+      width: 90%;
+      max-width: 800px;
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    .right-controls {
+      display: flex;
+      gap: 10px;
+    }
+
+    input[type="file"] {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="https://www.shutterstock.com/image-vector/chat-bot-icon-virtual-smart-600nw-2478937553.jpg" alt="ChatBot Logo" />
+    <h1>ChatBot</h1>
+  </header>
+
+  <div id="chat-box"></div>
+
+  <div id="input-area">
+    <input type="text" id="message" placeholder="Type your message..." />
+    <button id="voice-btn">🎤</button>
+    <button id="send-btn">Send</button>
+  </div>
+
+  <div id="controls">
+    <button id="clear-btn">🗑️ Clear Chat</button>
+    <div class="right-controls">
+      <button id="upload-btn">📎 Upload</button>
+      <button id="download-btn">⬇️ Download</button>
+      <button id="theme-btn">🌓 Theme</button>
+    </div>
+  </div>
+
+  <input type="file" id="file-input" />
+
+  <p style="font-size: 0.8rem; margin-bottom: 20px; color: #aaa;">
+    🤖 Built with Flask + Gemini | &copy; 2025 Your Project
+  </p>
+
+  <script>
+    const chatBox = document.getElementById('chat-box');
+    const sendBtn = document.getElementById('send-btn');
+    const messageInput = document.getElementById('message');
+    const voiceBtn = document.getElementById('voice-btn');
+    const uploadBtn = document.getElementById('upload-btn');
+    const fileInput = document.getElementById('file-input');
+    const clearBtn = document.getElementById('clear-btn');
+    const downloadBtn = document.getElementById('download-btn');
+    const themeBtn = document.getElementById('theme-btn');
+
+    sendBtn.onclick = sendMessage;
+    clearBtn.onclick = clearChat;
+    downloadBtn.onclick = () => { window.location.href = '/download_pdf'; };
+    uploadBtn.onclick = () => fileInput.click();
+    fileInput.onchange = uploadFile;
+    themeBtn.onclick = toggleTheme;
+
+    function sendMessage() {
+      const msg = messageInput.value.trim();
+      if (!msg) return;
+      addMessage('You', msg, 'user');
+      messageInput.value = '';
+      fetch('/send_message', {
+        method: 'POST',
+        body: new URLSearchParams({ message: msg }),
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+      })
+      .then(res => res.json())
+      .then(data => addMessage('ChatBot', data.message, 'bot'))
+      .catch(console.error);
+    }
+
+    function addMessage(sender, text, role) {
+      const msgDiv = document.createElement('div');
+      msgDiv.className = `message ${role}`;
+      msgDiv.innerHTML = `<strong>${sender}:</strong> ${text}
+        <div class="reactions">
+          <span class="reaction emoji">👍</span>
+          <span class="reaction emoji">👎</span>
+          <span class="reaction emoji">😊</span>
+          <span class="reaction emoji">😢</span>
+          <span class="reaction emoji">😡</span>
+          <button class="reaction copy">📋 Copy</button>
+        </div>`;
+      chatBox.appendChild(msgDiv);
+      chatBox.scrollTop = chatBox.scrollHeight;
+
+      msgDiv.querySelectorAll('.emoji').forEach(emoji => {
+        emoji.onclick = () => sendReaction(emoji.innerText);
+      });
+      msgDiv.querySelector('.copy').onclick = () => copyToClipboard(text);
+    }
+
+    function sendReaction(emoji) {
+      let botReply = '';
+      switch (emoji) {
+        case '👍': botReply = "🤖 I'm glad you liked it!"; break;
+        case '👎': botReply = "🤖 Sorry about that. I'll try to do better!"; break;
+        case '😊': botReply = "🤖 Yay! Happy to help!"; break;
+        case '😢': botReply = "🤖 Oh no! Hope things get better soon."; break;
+        case '😡': botReply = "🤖 Oops! Sorry for the trouble, I’ll improve next time."; break;
+      }
+      if (botReply) {
+        addMessage('ChatBot', botReply, 'bot');
+      }
+    }
+
+    function copyToClipboard(text) {
+      navigator.clipboard.writeText(text).then(() => alert('Copied to clipboard!'));
+    }
+
+    function clearChat() {
+      fetch('/clear_chat', { method: 'POST' })
+      .then(() => { chatBox.innerHTML = ''; });
+    }
+
+    function uploadFile() {
+      const file = fileInput.files[0];
+      if (!file) return;
+      const formData = new FormData();
+      formData.append('file', file);
+      fetch('/upload', { method: 'POST', body: formData })
+      .then(res => res.json())
+      .then(data => addMessage('ChatBot', data.message, 'bot'));
+    }
+
+    // Voice chat using SpeechRecognition
+    let recognition;
+    if ('webkitSpeechRecognition' in window) {
+      recognition = new webkitSpeechRecognition();
+      recognition.lang = 'en-US';
+      recognition.onresult = function(e) {
+        messageInput.value = e.results[0][0].transcript;
+      };
+    }
+
+    voiceBtn.onclick = () => {
+      if (recognition) {
+        recognition.start();
+      } else {
+        alert('Speech recognition not supported in this browser.');
+      }
+    };
+
+    function toggleTheme() {
+      const root = document.documentElement;
+      if (root.style.getPropertyValue('--bg-color') === '#0b2447') {
+        root.style.setProperty('--bg-color', '#ffffff');
+        root.style.setProperty('--header-bg', '#dddddd');
+        root.style.setProperty('--box-bg', '#f5f5f5');
+        root.style.setProperty('--text-color', '#000000');
+      } else {
+        root.style.setProperty('--bg-color', '#0b2447');
+        root.style.setProperty('--header-bg', '#19376d');
+        root.style.setProperty('--box-bg', '#10264d');
+        root.style.setProperty('--text-color', '#ffffff');
+      }
+    }
+  </script>
+</body>
+</html>

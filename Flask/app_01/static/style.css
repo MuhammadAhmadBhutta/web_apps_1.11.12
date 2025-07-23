@@ -1,0 +1,97 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  transition: background 0.3s, color 0.3s;
+}
+
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem;
+}
+
+#chat-container {
+  display: flex;
+  flex-direction: column;
+  height: 90vh;
+  max-width: 800px;
+  margin: auto;
+}
+
+#chat-box {
+  flex: 1;
+  overflow-y: scroll;
+  padding: 1rem;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.chat-bubble {
+  padding: 1rem;
+  border-radius: 8px;
+  margin: 0.5rem 0;
+  max-width: 70%;
+  white-space: pre-wrap;
+}
+
+.user {
+  align-self: flex-end;
+  background: var(--user-bg);
+  color: var(--user-color);
+}
+
+.bot {
+  align-self: flex-start;
+  background: var(--bot-bg);
+  color: var(--bot-color);
+}
+
+#chat-input {
+  display: flex;
+  border-top: 1px solid var(--border);
+}
+
+#chat-input input {
+  flex: 1;
+  padding: 1rem;
+  border: none;
+  outline: none;
+}
+
+#chat-input button {
+  padding: 1rem 2rem;
+}
+
+.light {
+  --bg: #f5f5f5;
+  --color: #111;
+  --border: #ccc;
+  --user-bg: #0d6efd;
+  --user-color: #fff;
+  --bot-bg: #e9ecef;
+  --bot-color: #111;
+}
+
+.dark {
+  --bg: #121212;
+  --color: #eee;
+  --border: #444;
+  --user-bg: #007bff;
+  --user-color: #fff;
+  --bot-bg: #1f1f1f;
+  --bot-color: #eee;
+}
+
+body.light {
+  background: var(--bg);
+  color: var(--color);
+}
+
+body.dark {
+  background: var(--bg);
+  color: var(--color);
+}
+
+input, button {
+  border: none;
+}
