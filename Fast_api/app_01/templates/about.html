@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>About - VIP Customer Detector</title>
+  <style>
+    :root {
+      --bg-color: #f0f2f5;
+      --text-color: #333;
+      --card-bg: #fff;
+      --primary: #007bff;
+    }
+
+    [data-theme="dark"] {
+      --bg-color: #121212;
+      --text-color: #f5f5f5;
+      --card-bg: #1f1f1f;
+      --primary: #4dabf7;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: var(--bg-color);
+      color: var(--text-color);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      padding: 50px;
+      transition: all 0.3s;
+    }
+
+    h1 {
+      margin-bottom: 10px;
+    }
+
+    p {
+      line-height: 1.6;
+      max-width: 600px;
+      text-align: center;
+    }
+
+    .extra-info {
+      display: none;
+      margin-top: 20px;
+      background: var(--card-bg);
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      max-width: 600px;
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    a {
+      margin-top: 30px;
+      display: inline-block;
+      text-decoration: none;
+      color: var(--primary);
+    }
+
+    .theme-toggle {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      padding: 8px 12px;
+      border: none;
+      background: var(--primary);
+      color: #fff;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+  <button class="theme-toggle" onclick="toggleTheme()">Toggle Theme</button>
+  <h1>About VIP Customer Detector</h1>
+
+  <p>This interactive web app helps small businesses identify VIP customers based on sales data using Recency, Frequency, and Monetary (RFM) scoring. It’s built with FastAPI for the backend and modern HTML, CSS, and JavaScript for a smooth experience.</p>
+
+  <button onclick="toggleExtra()">Show More</button>
+
+  <div class="extra-info" id="extraInfo">
+    <p>✅ The VIP score uses total spend, order frequency, and how recently the customer purchased.</p>
+    <p>✅ It shows the customer’s name and all the products they’ve bought.</p>
+    <p>✅ You can extend this to send special offers to VIPs, download VIP reports, or connect it with your CRM system.</p>
+  </div>
+
+  <a href="/">⬅️ Back to Home</a>
+
+  <script>
+    function toggleTheme() {
+      const currentTheme = document.documentElement.getAttribute('data-theme');
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+    }
+
+    // Load saved theme
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+
+    function toggleExtra() {
+      const extra = document.getElementById('extraInfo');
+      if (extra.style.display === 'none' || extra.style.display === '') {
+        extra.style.display = 'block';
+      } else {
+        extra.style.display = 'none';
+      }
+    }
+  </script>
+</body>
+</html>
