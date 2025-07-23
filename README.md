@@ -6,33 +6,42 @@ This repository contains a collection of **AI-powered web applications** develop
 
 ## 📁 Project Structure
 
+```
 web_apps_1.11.12/
 │
 ├── flask/
-│ ├── app_01/ → ChatBot (Gemini 2.0 Flash)
-│ │ ├── app.py
-│ │ └── templates/index.html
-│ │
-│ ├── app_02/ → Customer Segmentation Tool
-│ │ ├── app.py
-│ │ ├── templates/index.html
-│ │ └── dataset and models/
-│ │ ├── scaler.pkl
-│ │ └── kmeans_model.pkl
-│ │
-│ └── app_03/ → Superstore Product Recommender
-│ ├── app.py
-│ ├── model/recommender.py
-│ └── templates/index.html
+│   ├── app_01/ → ChatBot (Gemini 2.0 Flash)
+│   │   ├── app.py
+│   │   └── templates/
+│   │       └── index.html
+│   │
+│   ├── app_02/ → Customer Segmentation Tool
+│   │   ├── app.py
+│   │   ├── templates/
+│   │   │   └── index.html
+│   │   └── dataset and models/
+│   │       ├── scaler.pkl
+│   │       └── kmeans_model.pkl
+│   │
+│   └── app_03/ → Superstore Product Recommender
+│       ├── app.py
+│       ├── model/
+│       │   └── recommender.py
+│       └── templates/
+│           └── index.html
 │
 └── fast_api/
-├── app_01/ → VIP Customer Detector
-│ ├── main.py
-│ └── templates/index.html
-│
-└── app_02/ → Inventory Forecast Tool
-├── main.py
-└── templates/index.html
+    ├── app_01/ → VIP Customer Detector
+    │   ├── main.py
+    │   └── templates/
+    │       └── index.html
+    │
+    └── app_02/ → Inventory Forecast Tool
+        ├── main.py
+        └── templates/
+            └── index.html
+```
+
 
 
 ---
